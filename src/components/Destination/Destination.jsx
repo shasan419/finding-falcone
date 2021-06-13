@@ -1,8 +1,8 @@
 import { Divider } from "antd";
 import React from "react";
-import Dropdown from "./Dropdown/Dropdown";
+import PlanetSelect from "./PlanetSelect/PlanetSelect";
 
-const Division = ({
+const Destination = ({
   planets,
   vehicles,
   onHandleSelectChange,
@@ -12,10 +12,10 @@ const Division = ({
   return selectedPlanets.map((currentPlanet, i) => {
     return (
       <React.Fragment key={i}>
-        <Dropdown
+        <PlanetSelect
           planets={planets}
-          value={currentPlanet}
-          num={i}
+          currentPlanet={currentPlanet}
+          id={i}
           onHandleSelectChange={onHandleSelectChange}
           vehicles={vehicles}
           onHandleRadioChange={onHandleRadioChange}
@@ -26,4 +26,4 @@ const Division = ({
   });
 };
 
-export default Division;
+export default Destination;

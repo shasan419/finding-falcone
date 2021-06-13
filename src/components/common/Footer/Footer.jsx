@@ -1,11 +1,17 @@
 import React from "react";
-import "./Footer.css";
+import styled from "styled-components";
+
+const FooterWrapper = styled.footer`
+  flex-shrink: 0;
+  text-align: center;
+  padding: 24px;
+`;
 
 const Footer = (props) => {
   return (
-    <footer className="container__footer">
+    <FooterWrapper>
       <span>Coding problem - www.geektrust.in/finding-falcone</span>
-    </footer>
+    </FooterWrapper>
   );
 };
 
