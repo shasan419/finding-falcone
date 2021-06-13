@@ -1,0 +1,9 @@
+.select {
+  width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .select {
+    width: 160px;
+  }
+}
