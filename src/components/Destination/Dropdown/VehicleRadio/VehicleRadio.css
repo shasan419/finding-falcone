@@ -1,0 +1,11 @@
+.radio-group {
+  width: 100%;
+  height: fit-content;
+}
+
+@media only screen and (min-width: 768px) {
+  .radio-group {
+    width: 160px;
+    height: fit-content;
+  }
+}

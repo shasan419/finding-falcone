@@ -11,18 +11,4 @@ async function performApiCall(endpoint, payload) {
   return response;
 }
 
-function removeSelected(selectedArray, wholeArray) {
-  let onlyName = wholeArray.map((x) => {
-    return x.name;
-  });
-  selectedArray.forEach((x) => {
-    let index = onlyName.indexOf(x);
-    if (index > -1) {
-      wholeArray.splice(index, 1);
-      onlyName.splice(index, 1);
-    }
-  });
-  return wholeArray;
-}
-
-export { performApiCall, removeSelected };
+export { performApiCall };

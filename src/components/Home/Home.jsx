@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import Dropdown from "../Dropdown/Dropdown";
 import Loader from "../common/Loader/Loader";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
-import { performApiCall, removeSelected } from "../../utils/utils";
+import { performApiCall } from "../../utils/utils";
 import "./Home.css";
-import { Button, Divider } from "antd";
+import { Button } from "antd";
+import Destination from "../Destination/Destination";
 
 class Home extends Component {
   state = {
     loading: false,
+    isFind: false,
     planets: [],
     selectedPlanets: ["", "", "", ""],
     vehicles: [],
@@ -28,7 +29,8 @@ class Home extends Component {
   getVehicles = async () => {
     this.setState({ loading: true });
     const data = await performApiCall("/vehicles", {});
-    // console.log(data);
+    localStorage.setItem("vehicles", JSON.stringify(data));
+    console.log(data);
     this.setState({ vehicles: data, loading: false });
   };
 
@@ -53,11 +55,72 @@ class Home extends Component {
       }
       return x;
     });
-    let planetsFiltered = removeSelected(
+    let planetsFiltered = this.removeSelectedPlanet(
       selected,
       JSON.parse(localStorage.getItem("planets"))
     );
-    this.setState({ selectedPlanets: selected, planets: planetsFiltered });
+    this.setState({
+      selectedPlanets: selected,
+      planets: planetsFiltered,
+    });
+  };
+
+  handleVehicleChange = (val, id) => {
+    const { selectedVehicles } = this.state;
+    const selected = selectedVehicles.map((x, i) => {
+      if (i === id) {
+        return (x = val);
+      }
+      return x;
+    });
+    let vehiclesFiltered = this.removeSelectedVehicle(
+      selected,
+      JSON.parse(localStorage.getItem("vehicles"))
+    );
+    this.setState({
+      selectedVehicles: selected,
+      vehicles: vehiclesFiltered,
+    });
+  };
+
+  removeSelectedPlanet(selectedArray, wholeArray) {
+    let onlyName = wholeArray.map((x) => {
+      return x.name;
+    });
+    selectedArray.forEach((x) => {
+      let index = onlyName.indexOf(x);
+      if (index > -1) {
+        wholeArray.splice(index, 1);
+        onlyName.splice(index, 1);
+      }
+    });
+    return wholeArray;
+  }
+
+  removeSelectedVehicle(selectedArray, wholeArray) {
+    let onlyName = wholeArray.map((x) => {
+      return x.name;
+    });
+    selectedArray.forEach((x) => {
+      let index = onlyName.indexOf(x);
+      if (index > -1) {
+        if (wholeArray[index].total_no > 0) {
+          wholeArray[index].total_no -= 1;
+        }
+        onlyName.splice(index, 1);
+      }
+    });
+    return wholeArray;
+  }
+
+  resetFields = () => {
+    this.setState({
+      selectedPlanets: ["", "", "", ""],
+      selectedVehicles: ["", "", "", ""],
+    });
+    localStorage.removeItem("planets");
+    localStorage.removeItem("vehicles");
+    this.componentDidMount();
   };
 
   componentDidMount() {
@@ -68,15 +131,22 @@ class Home extends Component {
 
   componentWillUnmount() {
     localStorage.removeItem("planets");
+    localStorage.removeItem("vehicles");
   }
 
   render() {
-    const { planets, selectedPlanets, loading } = this.state;
-    const { handlePlanetChange } = this;
+    const { planets, selectedPlanets, loading, vehicles, isFind } = this.state;
+    const { handlePlanetChange, handleVehicleChange, resetFields } = this;
 
     return (
       <div className="container">
-        <Header resetButton={<Button danger>Reset</Button>} />
+        <Header
+          resetButton={
+            <Button onClick={() => resetFields()} danger>
+              Reset
+            </Button>
+          }
+        />
 
         {!loading ? (
           <main className="container__main">
@@ -84,20 +154,19 @@ class Home extends Component {
               Select planets you want to search in:
             </div>
             <div className="content">
-              {selectedPlanets.map((currentPlanet, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <Dropdown
-                      planets={planets}
-                      value={currentPlanet}
-                      num={i}
-                      onHandleChange={handlePlanetChange}
-                    />
-                    <Divider type="vertical" />
-                  </React.Fragment>
-                );
-              })}
+              <Destination
+                planets={planets}
+                vehicles={vehicles}
+                onHandleSelectChange={handlePlanetChange}
+                onHandleRadioChange={handleVehicleChange}
+                selectedPlanets={selectedPlanets}
+              />
             </div>
+            {isFind ? (
+              <div className="find-btn">
+                <Button>Find Falcone</Button>
+              </div>
+            ) : null}
           </main>
         ) : (
           <div className="loader">
