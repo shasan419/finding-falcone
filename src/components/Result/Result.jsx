@@ -1,30 +1,14 @@
 import React from "react";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
+import LinkButton from "./LinkButton/LinkButton";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { Button } from "antd";
-
-const Main = styled.div`
-  max-width: 60%;
-  width: 96%;
-  flex-grow: 1;
-  background-color: var(--light-content);
-  margin: 24px auto;
-  padding: 24px;
-  box-shadow: 0px 0px 2px 1px #c7c5c5;
-  display: flex;
-  flex-direction: column;
-  @media screen and (max-width: 768px) {
-    max-width: 96%;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
+import {
+  Main,
+  Container,
+  ButtonWrapper,
+  TextWrapper,
+} from "../styles/commonStyles";
 
 const SuccessContent = styled.div`
   display: flex;
@@ -40,18 +24,6 @@ const FailureContent = styled.div`
   align-items: center;
   background-color: #f8d7da;
   color: #721c24;
-`;
-
-const TextWrapper = styled.div`
-  text-align: center;
-  font-size: 26px;
-  margin: 24px;
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 24px;
 `;
 
 const Result = (props) => {
@@ -71,9 +43,7 @@ const Result = (props) => {
               <TextWrapper>Planet found: {result.planet_name}</TextWrapper>
             </SuccessContent>
             <ButtonWrapper>
-              <Link to={{ pathname: "/" }} style={{ textDecoration: "none" }}>
-                <Button type="dashed">Start Again</Button>
-              </Link>
+              <LinkButton />
             </ButtonWrapper>
           </>
         ) : (
@@ -84,9 +54,7 @@ const Result = (props) => {
               </TextWrapper>
             </FailureContent>
             <ButtonWrapper>
-              <Link to={{ pathname: "/" }} style={{ textDecoration: "none" }}>
-                <Button type="dashed">Start Again</Button>
-              </Link>
+              <LinkButton />
             </ButtonWrapper>
           </>
         )}

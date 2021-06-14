@@ -10,7 +10,9 @@ const FooterWrapper = styled.footer`
 const Footer = (props) => {
   return (
     <FooterWrapper>
-      <span>Coding problem - www.geektrust.in/finding-falcone</span>
+      <span style={{ color: "var(--text)" }}>
+        Coding problem - www.geektrust.in/finding-falcone
+      </span>
     </FooterWrapper>
   );
 };

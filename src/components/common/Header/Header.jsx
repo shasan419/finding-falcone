@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const HeaderWrapper = styled.header`
   flex-shrink: 0;
-  background-color: var(--light-content);
+  background-color: var(--content);
   box-shadow: 0px 0px 2px 1px #c7c5c5;
 `;
 
@@ -22,8 +22,13 @@ const NavItems = styled.div`
 `;
 
 const LogoText = styled.h1`
-  font-size: 32px;
-  color: var(--light-text);
+  font-size: 26px;
+  color: var(--text);
+  cursor: pointer;
+`;
+
+const RedirectText = styled.a`
+  color: var(--text);
   cursor: pointer;
 `;
 
@@ -37,9 +42,13 @@ const Header = (props) => {
         <div>
           {props.resetButton}
           <Divider type="vertical" />
-          <a href="https://www.geektrust.in/" target="_blank" rel="noreferrer">
+          <RedirectText
+            href="https://www.geektrust.in/"
+            target="_blank"
+            rel="noreferrer"
+          >
             Geek Trust Home
-          </a>
+          </RedirectText>
         </div>
       </NavItems>
     </HeaderWrapper>

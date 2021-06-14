@@ -2,35 +2,21 @@ import React, { Component } from "react";
 import Loader from "./Loader/Loader";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
-import { Button, message } from "antd";
+import { message } from "antd";
 import Destination from "../Destination/Destination";
+import CommonButton from "../common/CommonButton/CommonButton";
 import styled from "styled-components";
+import {
+  Main,
+  Container,
+  ButtonWrapper,
+  TextWrapper,
+} from "../styles/commonStyles";
 import {
   performApiCall,
   updateSelectedArray,
   updateTimeTaken,
 } from "../../utils/utils";
-
-const Main = styled.div`
-  max-width: fit-content;
-  width: 96%;
-  flex-grow: 1;
-  background-color: var(--light-content);
-  margin: 24px auto;
-  padding: 24px;
-  box-shadow: 0px 0px 2px 1px #c7c5c5;
-  display: flex;
-  flex-direction: column;
-  @media screen and (max-width: 768px) {
-    max-width: 96%;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const LoaderWrapper = styled.div`
   display: flex;
@@ -48,19 +34,6 @@ const ContentWrapper = styled.div`
     flex-direction: column;
   }
 `;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 24px;
-`;
-
-const TextWrapper = styled.div`
-  text-align: center;
-  font-size: 26px;
-  margin: 24px;
-`;
 class Home extends Component {
   state = {
     loading: false,
@@ -71,13 +44,13 @@ class Home extends Component {
     selectedVehicles: ["", "", "", ""],
     result: "",
     timeTaken: 0,
+    loadingText: "Loading...",
   };
 
   getPlanets = async () => {
     this.setState({ loading: true });
     const data = await performApiCall("/planets", {});
     localStorage.setItem("planets", JSON.stringify(data));
-    // console.log(data);
     this.setState({ planets: data, loading: false });
   };
 
@@ -85,7 +58,6 @@ class Home extends Component {
     this.setState({ loading: true });
     const data = await performApiCall("/vehicles", {});
     localStorage.setItem("vehicles", JSON.stringify(data));
-    // console.log(data);
     this.setState({ vehicles: data, loading: false });
   };
 
@@ -99,13 +71,12 @@ class Home extends Component {
       body: {},
     });
     localStorage.setItem("token", JSON.stringify(data.token));
-    // console.log(data);
     this.setState({ loading: false });
   };
 
   handleFindFalcone = async () => {
     const { selectedPlanets, selectedVehicles } = this.state;
-    this.setState({ loading: true });
+    this.setState({ loadingText: "Searching...", loading: true });
     const data = await performApiCall("/find", {
       method: "POST",
       headers: {
@@ -122,11 +93,12 @@ class Home extends Component {
     if (data.error) {
       message.error(data.error);
       this.resetFields();
+    } else {
+      this.props.history.push("/result", {
+        result: data,
+        timeTaken: this.state.timeTaken,
+      });
     }
-    this.props.history.push("/result", {
-      result: data,
-      timeTaken: this.state.timeTaken,
-    });
   };
 
   handlePlanetChange = (val, id) => {
@@ -206,6 +178,7 @@ class Home extends Component {
       vehicles,
       timeTaken,
       isShowFind,
+      loadingText,
     } = this.state;
     const {
       handlePlanetChange,
@@ -218,9 +191,12 @@ class Home extends Component {
       <Container>
         <Header
           resetButton={
-            <Button type="dashed" onClick={() => resetFields()} danger>
-              Reset
-            </Button>
+            <CommonButton
+              type="dashed"
+              onClick={() => resetFields()}
+              danger
+              content={"Reset"}
+            />
           }
         />
 
@@ -239,19 +215,18 @@ class Home extends Component {
             <TextWrapper>Time taken: {timeTaken}</TextWrapper>
             <ButtonWrapper>
               {isShowFind ? (
-                <Button
+                <CommonButton
                   type="dashed"
                   onClick={() => handleFindFalcone()}
                   loading={loading}
-                >
-                  Find Falcone!
-                </Button>
+                  content={"Find Falcone!"}
+                />
               ) : null}
             </ButtonWrapper>
           </Main>
         ) : (
           <LoaderWrapper>
-            <Loader />
+            <Loader text={loadingText} />
           </LoaderWrapper>
         )}
         <Footer />

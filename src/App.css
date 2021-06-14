@@ -1,9 +1,0 @@
-:root {
-  --light-text: hsl(200, 15%, 8%);
-  --light-content: hsl(0, 0%, 100%);
-  --light-bg: hsl(0, 0%, 98%);
-}
-
-.App {
-  background-color: var(--light-bg);
-}

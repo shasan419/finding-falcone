@@ -1,8 +1,8 @@
 import React from "react";
 import { Spin } from "antd";
 
-const Loader = () => {
-  return <Spin size="large" tip="Loading..." />;
+const Loader = ({ text }) => {
+  return <Spin size="large" tip={text} />;
 };
 
 export default Loader;
