@@ -105,9 +105,6 @@ class Home extends Component {
 
   handleFindFalcone = async () => {
     const { selectedPlanets, selectedVehicles } = this.state;
-    console.log(selectedPlanets);
-    console.log(selectedVehicles);
-
     this.setState({ loading: true });
     const data = await performApiCall("/find", {
       method: "POST",
@@ -121,7 +118,6 @@ class Home extends Component {
         vehicle_names: [...selectedVehicles],
       }),
     });
-    console.log(data);
     this.setState({ result: data, loading: false });
     if (data.error) {
       message.error(data.error);
