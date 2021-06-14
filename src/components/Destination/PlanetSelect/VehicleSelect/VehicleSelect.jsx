@@ -27,12 +27,12 @@ const VehicleSelect = ({
               }
             >
               <Popover
-                placement="right"
+                placement="top"
                 title={x.name}
                 content={
                   <div>
-                    <p>Max Distance - {x.max_distance} megamiles</p>
-                    <p>Speed - {x.speed} megamiles/hr</p>
+                    <p>Max Distance - {x.max_distance}</p>
+                    <p>Speed - {x.speed}</p>
                   </div>
                 }
                 trigger="hover"

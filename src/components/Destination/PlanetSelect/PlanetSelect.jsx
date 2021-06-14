@@ -13,10 +13,12 @@ const PlanetSelect = ({
   onHandleRadioChange,
 }) => {
   let value = "";
+  let distance = "";
   if (currentPlanet !== "") {
     value = JSON.parse(localStorage.getItem("planets")).filter(
       (x) => x.name === currentPlanet
     );
+    distance = value[0].distance;
   }
   return (
     <Space direction="vertical">
@@ -24,7 +26,7 @@ const PlanetSelect = ({
       <Divider type="verticle" />
       <Select
         className="select"
-        value={currentPlanet ? currentPlanet : ""}
+        value={currentPlanet ? currentPlanet + " - " + distance : ""}
         onChange={(val) => onHandleSelectChange(val, id)}
       >
         {planets.map((planet, i) => {
