@@ -8,6 +8,7 @@ const Destination = ({
   onHandleSelectChange,
   onHandleRadioChange,
   selectedPlanets,
+  selectedVehicles,
 }) => {
   return selectedPlanets.map((currentPlanet, i) => {
     return (
@@ -19,6 +20,7 @@ const Destination = ({
           onHandleSelectChange={onHandleSelectChange}
           vehicles={vehicles}
           onHandleRadioChange={onHandleRadioChange}
+          selectedVehicles={selectedVehicles}
         />
         <Divider type="vertical" />
       </React.Fragment>

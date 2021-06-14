@@ -8,6 +8,7 @@ const PlanetSelect = ({
   planets,
   vehicles,
   currentPlanet,
+  selectedVehicles,
   id,
   onHandleSelectChange,
   onHandleRadioChange,
@@ -44,6 +45,7 @@ const PlanetSelect = ({
           id={id}
           vehicles={vehicles}
           onHandleRadioChange={onHandleRadioChange}
+          selectedVehicles={selectedVehicles}
         />
       ) : null}
     </Space>

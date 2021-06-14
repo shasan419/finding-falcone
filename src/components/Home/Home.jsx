@@ -109,6 +109,7 @@ class Home extends Component {
       }
       return x;
     });
+    this.handleVehicleChange("", id);
     let planetsFiltered = updateSelectedArray(
       selected,
       JSON.parse(localStorage.getItem("planets")),
@@ -178,6 +179,7 @@ class Home extends Component {
     const {
       planets,
       selectedPlanets,
+      selectedVehicles,
       loading,
       vehicles,
       timeTaken,
@@ -214,6 +216,7 @@ class Home extends Component {
                 onHandleSelectChange={handlePlanetChange}
                 onHandleRadioChange={handleVehicleChange}
                 selectedPlanets={selectedPlanets}
+                selectedVehicles={selectedVehicles}
               />
             </ContentWrapper>
             <TextWrapper>Time taken: {timeTaken}</TextWrapper>
