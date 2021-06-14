@@ -19,3 +19,22 @@ code {
   --content: hsl(0, 0%, 100%);
   --bg: hsl(0, 0%, 98%);
 }
+
+.select {
+  width: 100%;
+}
+
+.radio-group {
+  width: 100%;
+  height: fit-content;
+}
+
+@media only screen and (min-width: 769px) {
+  .radio-group {
+    width: 160px;
+    height: fit-content;
+  }
+  .select {
+    width: 160px;
+  }
+}
