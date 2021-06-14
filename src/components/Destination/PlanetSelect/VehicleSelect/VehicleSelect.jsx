@@ -1,6 +1,5 @@
 import React from "react";
 import { Radio, Space, Popover } from "antd";
-import "./VehicleSelect.css";
 
 const VehicleSelect = ({
   currentPlanet,

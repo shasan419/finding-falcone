@@ -1,7 +1,6 @@
 import React from "react";
 import { Select, Divider, Space } from "antd";
 import VehicleSelect from "./VehicleSelect/VehicleSelect";
-import "./PlanetSelect.css";
 const { Option } = Select;
 
 const PlanetSelect = ({
