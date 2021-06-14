@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Loader from "../common/Loader/Loader";
+import Loader from "./Loader/Loader";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import Destination from "../Destination/Destination";
 import styled from "styled-components";
 import {
@@ -64,11 +64,11 @@ const TextWrapper = styled.div`
 class Home extends Component {
   state = {
     loading: false,
+    isShowFind: false,
     planets: [],
     selectedPlanets: ["", "", "", ""],
     vehicles: [],
     selectedVehicles: ["", "", "", ""],
-    token: "",
     result: "",
     timeTaken: 0,
   };
@@ -98,12 +98,13 @@ class Home extends Component {
       },
       body: {},
     });
+    localStorage.setItem("token", JSON.stringify(data.token));
     // console.log(data);
-    this.setState({ token: data, loading: false });
+    this.setState({ loading: false });
   };
 
   handleFindFalcone = async () => {
-    const { token, selectedPlanets, selectedVehicles } = this.state;
+    const { selectedPlanets, selectedVehicles } = this.state;
     console.log(selectedPlanets);
     console.log(selectedVehicles);
 
@@ -115,13 +116,21 @@ class Home extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token: token,
+        token: JSON.parse(localStorage.getItem("token")),
         planet_names: [...selectedPlanets],
         vehicle_names: [...selectedVehicles],
       }),
     });
     console.log(data);
     this.setState({ result: data, loading: false });
+    if (data.error) {
+      message.error(data.error);
+      this.resetFields();
+    }
+    this.props.history.push("/result", {
+      result: data,
+      timeTaken: this.state.timeTaken,
+    });
   };
 
   handlePlanetChange = (val, id) => {
@@ -156,6 +165,9 @@ class Home extends Component {
       JSON.parse(localStorage.getItem("vehicles")),
       "vehicles"
     );
+    if (selected[3] !== "") {
+      this.setState({ isShowFind: true });
+    }
     this.setState({
       selectedVehicles: selected,
       vehicles: vehiclesFiltered,
@@ -191,8 +203,14 @@ class Home extends Component {
   }
 
   render() {
-    const { planets, selectedPlanets, loading, vehicles, timeTaken } =
-      this.state;
+    const {
+      planets,
+      selectedPlanets,
+      loading,
+      vehicles,
+      timeTaken,
+      isShowFind,
+    } = this.state;
     const {
       handlePlanetChange,
       handleVehicleChange,
@@ -204,7 +222,7 @@ class Home extends Component {
       <Container>
         <Header
           resetButton={
-            <Button onClick={() => resetFields()} danger>
+            <Button type="dashed" onClick={() => resetFields()} danger>
               Reset
             </Button>
           }
@@ -224,9 +242,15 @@ class Home extends Component {
             </ContentWrapper>
             <TextWrapper>Time taken: {timeTaken}</TextWrapper>
             <ButtonWrapper>
-              <Button type="primary" onClick={() => handleFindFalcone()}>
-                Find Falcone
-              </Button>
+              {isShowFind ? (
+                <Button
+                  type="dashed"
+                  onClick={() => handleFindFalcone()}
+                  loading={loading}
+                >
+                  Find Falcone
+                </Button>
+              ) : null}
             </ButtonWrapper>
           </Main>
         ) : (

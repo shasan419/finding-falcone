@@ -16,31 +16,31 @@ const VehicleSelect = ({
       <Space direction="vertical">
         {vehicles.map((x, i) => {
           return (
-            <Popover
+            <Radio
               key={i}
-              placement="topLeft"
-              title={x.name}
-              content={
-                <div>
-                  <p>Max Distance - {x.max_distance} megamiles</p>
-                  <p>Speed - {x.speed} megamiles/hr</p>
-                </div>
+              value={x.name}
+              name={x.name}
+              disabled={
+                x.max_distance >= currentPlanet[0].distance && x.total_no > 0
+                  ? false
+                  : true
               }
-              trigger="hover"
             >
-              <Radio
-                value={x.name}
-                name={x.name}
-                disabled={
-                  x.max_distance >= currentPlanet[0].distance && x.total_no > 0
-                    ? false
-                    : true
+              <Popover
+                placement="right"
+                title={x.name}
+                content={
+                  <div>
+                    <p>Max Distance - {x.max_distance} megamiles</p>
+                    <p>Speed - {x.speed} megamiles/hr</p>
+                  </div>
                 }
+                trigger="hover"
               >
                 {x.name}
                 {`(${x.total_no})`}
-              </Radio>
-            </Popover>
+              </Popover>
+            </Radio>
           );
         })}
       </Space>

@@ -1,11 +1,10 @@
 import React from "react";
-import Loader from "../common/Loader/Loader";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
 import styled from "styled-components";
 
 const Main = styled.div`
-  max-width: fit-content;
+  max-width: 60%;
   width: 96%;
   flex-grow: 1;
   background-color: var(--light-content);
@@ -25,25 +24,13 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
-const Result = ({ loading }) => {
+const Result = (props) => {
+  console.log(props);
   return (
     <Container>
       <Header />
       <Main>
-        {!loading ? (
-          <p>Result</p>
-        ) : (
-          <LoaderWrapper>
-            <Loader />
-          </LoaderWrapper>
-        )}
+        <p>{props.location.state.result.status}</p>
       </Main>
       <Footer />
     </Container>
