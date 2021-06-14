@@ -244,7 +244,7 @@ class Home extends Component {
                   onClick={() => handleFindFalcone()}
                   loading={loading}
                 >
-                  Find Falcone
+                  Find Falcone!
                 </Button>
               ) : null}
             </ButtonWrapper>

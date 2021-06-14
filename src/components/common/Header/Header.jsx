@@ -32,7 +32,7 @@ const Header = (props) => {
     <HeaderWrapper>
       <NavItems>
         <Link to={{ pathname: "/" }} style={{ textDecoration: "none" }}>
-          <LogoText>Finding Falcone</LogoText>
+          <LogoText>Finding Falcone!</LogoText>
         </Link>
         <div>
           {props.resetButton}
