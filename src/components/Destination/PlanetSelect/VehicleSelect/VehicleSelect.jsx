@@ -13,6 +13,7 @@ const VehicleSelect = ({
       onChange={(e) => onHandleRadioChange(e.target.value, id)}
       className="radio-group"
       value={selectedVehicles[id]}
+      size="large"
     >
       <Space direction="vertical">
         {vehicles.map((x, i) => {

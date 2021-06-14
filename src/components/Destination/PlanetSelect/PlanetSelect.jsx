@@ -28,6 +28,7 @@ const PlanetSelect = ({
         className="select"
         value={currentPlanet ? currentPlanet + " - " + distance : ""}
         onChange={(val) => onHandleSelectChange(val, id)}
+        size="large"
       >
         {planets.map((planet, i) => {
           return (
