@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "antd";
 
-const CommonButton = ({ content, ...rest }) => {
+const CButton = ({ content, ...rest }) => {
   return <Button {...rest}>{content}</Button>;
 };
 
-export default CommonButton;
+export default CButton;

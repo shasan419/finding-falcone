@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Divider } from "antd";
 import styled from "styled-components";
+import CLink from "../CLink/CLink";
 
 const HeaderWrapper = styled.header`
   flex-shrink: 0;
@@ -36,9 +36,7 @@ const Header = (props) => {
   return (
     <HeaderWrapper>
       <NavItems>
-        <Link to={{ pathname: "/" }} style={{ textDecoration: "none" }}>
-          <LogoText>Finding Falcone!</LogoText>
-        </Link>
+        <CLink content={<LogoText>Finding Falcone!</LogoText>} path={"/"} />
         <div>
           {props.resetButton}
           <Divider type="vertical" />

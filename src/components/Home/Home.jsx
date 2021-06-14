@@ -4,7 +4,7 @@ import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
 import { message } from "antd";
 import Destination from "../Destination/Destination";
-import CommonButton from "../common/CommonButton/CommonButton";
+import CButton from "../common/CButton/CButton";
 import styled from "styled-components";
 import {
   Main,
@@ -144,9 +144,12 @@ class Home extends Component {
 
   resetFields = () => {
     this.setState({
+      loadingText: "Resetting...",
       selectedPlanets: ["", "", "", ""],
       selectedVehicles: ["", "", "", ""],
     });
+    this.getPlanets();
+    this.getVehicles();
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -168,6 +171,7 @@ class Home extends Component {
   componentWillUnmount() {
     localStorage.removeItem("planets");
     localStorage.removeItem("vehicles");
+    localStorage.removeItem("token");
   }
 
   render() {
@@ -191,7 +195,7 @@ class Home extends Component {
       <Container>
         <Header
           resetButton={
-            <CommonButton
+            <CButton
               type="dashed"
               onClick={() => resetFields()}
               danger
@@ -215,7 +219,7 @@ class Home extends Component {
             <TextWrapper>Time taken: {timeTaken}</TextWrapper>
             <ButtonWrapper>
               {isShowFind ? (
-                <CommonButton
+                <CButton
                   type="dashed"
                   onClick={() => handleFindFalcone()}
                   loading={loading}

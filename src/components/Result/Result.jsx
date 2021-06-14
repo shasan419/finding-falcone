@@ -1,8 +1,9 @@
 import React from "react";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
-import LinkButton from "./LinkButton/LinkButton";
 import styled from "styled-components";
+import CButton from "../common/CButton/CButton";
+import CLink from "../common/CLink/CLink";
 import {
   Main,
   Container,
@@ -43,7 +44,10 @@ const Result = (props) => {
               <TextWrapper>Planet found: {result.planet_name}</TextWrapper>
             </SuccessContent>
             <ButtonWrapper>
-              <LinkButton />
+              <CLink
+                content={<CButton content={"Start Again"} type="dashed" />}
+                path={"/"}
+              />
             </ButtonWrapper>
           </>
         ) : (
@@ -54,7 +58,10 @@ const Result = (props) => {
               </TextWrapper>
             </FailureContent>
             <ButtonWrapper>
-              <LinkButton />
+              <CLink
+                content={<CButton content={"Start Again"} type="dashed" />}
+                path={"/"}
+              />
             </ButtonWrapper>
           </>
         )}
