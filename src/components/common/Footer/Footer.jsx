@@ -7,7 +7,7 @@ const FooterWrapper = styled.footer`
   padding: 24px;
 `;
 
-const Footer = (props) => {
+const Footer = () => {
   return (
     <FooterWrapper>
       <span style={{ color: "var(--text)" }}>

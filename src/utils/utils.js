@@ -11,17 +11,24 @@ async function performApiCall(endpoint, payload) {
   return response;
 }
 
+function createArray(length) {
+  let a = new Array(length);
+  for (let i = 0; i < length; ++i) a[i] = "";
+
+  return a;
+}
+
 function updateSelectedArray(selectedArray, wholeArray, type) {
-  let name = wholeArray.map((x) => {
+  let nameArray = wholeArray.map((x) => {
     return x.name;
   });
   selectedArray.forEach((x) => {
-    let index = name.indexOf(x);
+    let index = nameArray.indexOf(x);
     if (index > -1) {
       if (type === "planets") {
         wholeArray.splice(index, 1);
-        name.splice(index, 1);
-      } else {
+        nameArray.splice(index, 1);
+      } else if (type === "vehicles") {
         if (wholeArray[index].total_no > 0) {
           wholeArray[index].total_no -= 1;
         }
@@ -34,17 +41,27 @@ function updateSelectedArray(selectedArray, wholeArray, type) {
 function updateTimeTaken(selectedPlanets, selectedVehicles) {
   let timeTaken = 0;
   for (let i = 0; i < selectedPlanets.length; i++) {
-    if (selectedPlanets[i] !== "" && selectedVehicles[i] !== "") {
-      timeTaken +=
-        JSON.parse(localStorage.getItem("planets")).filter(
-          (x) => x.name === selectedPlanets[i]
-        )[0].distance /
-        JSON.parse(localStorage.getItem("vehicles")).filter(
-          (x) => x.name === selectedVehicles[i]
-        )[0].speed;
+    if (
+      isNotEmptyString(selectedPlanets[i]) &&
+      isNotEmptyString(selectedVehicles[i])
+    ) {
+      let planet = JSON.parse(localStorage.getItem("planets")).filter(
+        (x) => x.name === selectedPlanets[i]
+      );
+      let vehicle = JSON.parse(localStorage.getItem("vehicles")).filter(
+        (x) => x.name === selectedVehicles[i]
+      );
+      timeTaken += planet[0].distance / vehicle[0].speed;
     }
   }
   return timeTaken;
 }
 
-export { performApiCall, updateSelectedArray, updateTimeTaken };
+function isNotEmptyString(str) {
+  if (str !== "") {
+    return true;
+  }
+  return false;
+}
+
+export { performApiCall, updateSelectedArray, updateTimeTaken, createArray };

@@ -25,6 +25,7 @@ const PlanetSelect = ({
       <span>{`Destination ${id + 1}`}</span>
       <Divider type="verticle" />
       <Select
+        showSearch
         className="select"
         value={currentPlanet ? currentPlanet + " - " + distance : ""}
         onChange={(val) => onHandleSelectChange(val, id)}

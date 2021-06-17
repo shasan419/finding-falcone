@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Loader from "./Loader/Loader";
+import Loader from "../common/Loader/Loader";
 import Header from "../common/Header/Header";
 import Footer from "../common/Footer/Footer";
 import { message } from "antd";
@@ -16,6 +16,7 @@ import {
   performApiCall,
   updateSelectedArray,
   updateTimeTaken,
+  createArray,
 } from "../../utils/utils";
 
 const LoaderWrapper = styled.div`
@@ -39,9 +40,9 @@ class Home extends Component {
     loading: false,
     isShowFind: false,
     planets: [],
-    selectedPlanets: ["", "", "", ""],
+    selectedPlanets: createArray(4),
     vehicles: [],
-    selectedVehicles: ["", "", "", ""],
+    selectedVehicles: createArray(4),
     result: "",
     timeTaken: 0,
     loadingText: "Loading...",
@@ -92,7 +93,7 @@ class Home extends Component {
     this.setState({ result: data, loading: false });
     if (data.error) {
       message.error(data.error);
-      this.resetFields();
+      this.getToken();
     } else {
       this.props.history.push("/result", {
         result: data,
@@ -146,11 +147,12 @@ class Home extends Component {
   resetFields = () => {
     this.setState({
       loadingText: "Resetting...",
-      selectedPlanets: ["", "", "", ""],
-      selectedVehicles: ["", "", "", ""],
+      selectedPlanets: createArray(4),
+      selectedVehicles: createArray(4),
     });
     this.getPlanets();
     this.getVehicles();
+    this.getToken();
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -170,6 +172,7 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
+    //resetting the response data
     localStorage.removeItem("planets");
     localStorage.removeItem("vehicles");
     localStorage.removeItem("token");
