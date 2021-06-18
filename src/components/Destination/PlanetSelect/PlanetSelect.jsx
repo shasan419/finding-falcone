@@ -1,7 +1,7 @@
 import React from "react";
 import { Select, Divider, Space } from "antd";
 import VehicleSelect from "./VehicleSelect/VehicleSelect";
-import { getLocalItem } from "../../../utils/utils";
+import { getLocalItem, isNotEmptyString } from "../../../utils/utils";
 const { Option } = Select;
 
 const PlanetSelect = ({
@@ -15,7 +15,7 @@ const PlanetSelect = ({
 }) => {
   let value = "";
   let distance = "";
-  if (currentPlanet !== "") {
+  if (isNotEmptyString(currentPlanet)) {
     value = getLocalItem("planets").filter((x) => x.name === currentPlanet);
     distance = value[0].distance;
   }
@@ -39,7 +39,7 @@ const PlanetSelect = ({
         })}
       </Select>
 
-      {currentPlanet !== "" ? (
+      {isNotEmptyString(currentPlanet) ? (
         <VehicleSelect
           currentPlanet={value}
           id={id}
