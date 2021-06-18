@@ -14,9 +14,10 @@ import {
 } from "../styles/commonStyles";
 import {
   performApiCall,
-  updateSelectedArray,
-  updateTimeTaken,
+  isNotEmptyString,
   createArray,
+  setLocalItem,
+  getLocalItem,
 } from "../../utils/utils";
 
 const LoaderWrapper = styled.div`
@@ -51,14 +52,14 @@ class Home extends Component {
   getPlanets = async () => {
     this.setState({ loading: true });
     const data = await performApiCall("/planets", {});
-    localStorage.setItem("planets", JSON.stringify(data));
+    setLocalItem("planets", data);
     this.setState({ planets: data, loading: false });
   };
 
   getVehicles = async () => {
     this.setState({ loading: true });
     const data = await performApiCall("/vehicles", {});
-    localStorage.setItem("vehicles", JSON.stringify(data));
+    setLocalItem("vehicles", data);
     this.setState({ vehicles: data, loading: false });
   };
 
@@ -71,7 +72,7 @@ class Home extends Component {
       },
       body: {},
     });
-    localStorage.setItem("token", JSON.stringify(data.token));
+    setLocalItem("token", data.token);
     this.setState({ loading: false });
   };
 
@@ -85,7 +86,7 @@ class Home extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token: JSON.parse(localStorage.getItem("token")),
+        token: getLocalItem("token"),
         planet_names: [...selectedPlanets],
         vehicle_names: [...selectedVehicles],
       }),
@@ -111,9 +112,9 @@ class Home extends Component {
       return x;
     });
     this.handleVehicleChange("", id);
-    let planetsFiltered = updateSelectedArray(
+    let planetsFiltered = this.updateSelectedArray(
       selected,
-      JSON.parse(localStorage.getItem("planets")),
+      getLocalItem("planets"),
       "planets"
     );
     this.setState({
@@ -130,9 +131,9 @@ class Home extends Component {
       }
       return x;
     });
-    let vehiclesFiltered = updateSelectedArray(
+    let vehiclesFiltered = this.updateSelectedArray(
       selected,
-      JSON.parse(localStorage.getItem("vehicles")),
+      getLocalItem("vehicles"),
       "vehicles"
     );
     if (selected[3] !== "") {
@@ -142,6 +143,45 @@ class Home extends Component {
       selectedVehicles: selected,
       vehicles: vehiclesFiltered,
     });
+  };
+
+  updateSelectedArray = (selectedArray, wholeArray, type) => {
+    let nameArray = wholeArray.map((x) => {
+      return x.name;
+    });
+    selectedArray.forEach((x) => {
+      let index = nameArray.indexOf(x);
+      if (index > -1) {
+        if (type === "planets") {
+          wholeArray.splice(index, 1);
+          nameArray.splice(index, 1);
+        } else if (type === "vehicles") {
+          if (wholeArray[index].total_no > 0) {
+            wholeArray[index].total_no -= 1;
+          }
+        }
+      }
+    });
+    return wholeArray;
+  };
+
+  updateTimeTaken = (selectedPlanets, selectedVehicles) => {
+    let timeTaken = 0;
+    for (let i = 0; i < selectedPlanets.length; i++) {
+      if (
+        isNotEmptyString(selectedPlanets[i]) &&
+        isNotEmptyString(selectedVehicles[i])
+      ) {
+        let planet = getLocalItem("planets").filter(
+          (x) => x.name === selectedPlanets[i]
+        );
+        let vehicle = getLocalItem("vehicles").filter(
+          (x) => x.name === selectedVehicles[i]
+        );
+        timeTaken += planet[0].distance / vehicle[0].speed;
+      }
+    }
+    return timeTaken;
   };
 
   resetFields = () => {
@@ -157,10 +197,11 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.selectedVehicles !== prevState.selectedVehicles) {
-      const timeTaken = updateTimeTaken(
+      const timeTaken = this.updateTimeTaken(
         this.state.selectedPlanets,
         this.state.selectedVehicles
       );
+      //updating time taken to travel
       this.setState({ timeTaken });
     }
   }

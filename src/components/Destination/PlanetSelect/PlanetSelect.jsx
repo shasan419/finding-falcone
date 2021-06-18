@@ -1,6 +1,7 @@
 import React from "react";
 import { Select, Divider, Space } from "antd";
 import VehicleSelect from "./VehicleSelect/VehicleSelect";
+import { getLocalItem } from "../../../utils/utils";
 const { Option } = Select;
 
 const PlanetSelect = ({
@@ -15,9 +16,7 @@ const PlanetSelect = ({
   let value = "";
   let distance = "";
   if (currentPlanet !== "") {
-    value = JSON.parse(localStorage.getItem("planets")).filter(
-      (x) => x.name === currentPlanet
-    );
+    value = getLocalItem("planets").filter((x) => x.name === currentPlanet);
     distance = value[0].distance;
   }
   return (
